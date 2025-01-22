@@ -115,9 +115,19 @@ public struct Tokenizer {
         return Tokenizer("unicode61", arguments)
     }
 
-    // https://sqlite.org/fts5.html#the_experimental_trigram_tokenizer
-    public static func Trigram(caseSensitive: Bool = false) -> Tokenizer {
-        Tokenizer("trigram", ["case_sensitive", caseSensitive ? "1" : "0"])
+    // https://sqlite.org/fts5.html#the_trigram_tokenizer
+    public static func Trigram(caseSensitive: Bool? = false, removeDiacritics: Bool? = nil) -> Tokenizer {
+        var arguments = [String]()
+
+        if let caseSensitive {
+            arguments.append("case_sensitive \(caseSensitive ? 1 : 0)")
+        }
+
+        if let removeDiacritics {
+            arguments.append("remove_diacritics \(removeDiacritics ? 1 : 0)")
+        }
+
+        return Tokenizer("trigram", arguments)
     }
 
     public static func Custom(_ name: String) -> Tokenizer {

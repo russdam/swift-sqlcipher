@@ -5,10 +5,11 @@ with built-in [SQLCipher] and [Full-text search] extensions,
 along with a [SQLiteDB] Swift package that provides
 API parity with the venerable [SQLite.swift] project.
 
-This is a stand-along and platform-agnostic project, and 
+This is a stand-alone and platform-agnostic project, and 
 does not presume the presence of any SQLite binary.
 It is therefore suitable for embedded projects or 
-environments without any accessible `sqlite3.so` library (e.g., Android).
+environments without any accessible system `sqlite3`
+library (e.g., Android, Windows).
 
 ## Features
 
