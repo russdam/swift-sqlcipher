@@ -33,7 +33,7 @@ library (e.g., Android, Windows).
 [Schema query/migration]: Documentation/Index.md#querying-the-schema
 [See Documentation]: Documentation/Index.md#sqliteswift-documentation
 
-## Usage
+## SQLiteDB
 
 ```swift
 import SQLiteDB
@@ -135,12 +135,6 @@ Swift code.
 
 ## Communication
 
-[Read the contributing guidelines][]. The _TL;DR_ (but please; _R_):
-
- - Found a **bug** or have a **feature request**? [Open an issue][].
- - Want to **contribute**? [Submit a pull request][].
-
-[Read the contributing guidelines]: ./CONTRIBUTING.md#contributing
 [Open an issue]: https://github.com/skiptools/swift-sqlcipher/issues/new
 [Submit a pull request]: https://github.com/skiptools/swift-sqlcipher/pulls
 
@@ -157,6 +151,7 @@ Here are a number of other popular SQLite alternative packages:
  - [swift-toolchain-sqlite](https://github.com/swiftlang/swift-toolchain-sqlite)
  - [FMDB]
 
+[SQLiteDB]: #sqlitedb
 [SQLite3]: https://www.sqlite.org
 [SQLite.swift]: https://github.com/stephencelis/SQLite.swift
 [FMDB]: https://github.com/ccgus/fmdb
