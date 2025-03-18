@@ -27,8 +27,6 @@ jobs:
         run: xcodebuild test -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 15" -scheme "$(xcodebuild -list -json | jq -r '.workspace.schemes[-1]')"
   windows:
     runs-on: windows-latest
-    # disabled until https://github.com/compnerd/swift-build/issues/909 is fixed
-    if: false
     steps:
       - uses: compnerd/gha-setup-swift@main
         with:
