@@ -193,7 +193,8 @@ let path = Bundle.main.path(forResource: "db", ofType: "sqlite3")!
 let db = try Connection(path, readonly: true)
 ```
 
-> _Note:_ Signed applications cannot modify their bundle resources. If you
+> [!NOTE]
+> Signed applications cannot modify their bundle resources. If you
 > bundle a database file with your app for the purpose of bootstrapping, copy
 > it to a writable location _before_ establishing a connection (see
 > [Read-Write Databases](#read-write-databases), above, for typical, writable
@@ -254,7 +255,8 @@ db.busyHandler({ tries in
 })
 ```
 
-> _Note:_ The default timeout is 0, so if you see `database is locked`
+> [!NOTE]
+> The default timeout is 0, so if you see `database is locked`
 > errors, you may be trying to access the same database simultaneously from
 > multiple connections.
 
@@ -314,7 +316,8 @@ Use optional generics for expressions that can evaluate to `NULL`.
 let name = SQLExpression<String?>("name")
 ```
 
-> _Note:_ The default `SQLExpression` initializer is for [quoted
+> [!NOTE]
+> The default `SQLExpression` initializer is for [quoted
 > identifiers](https://www.sqlite.org/lang_keywords.html) (_i.e._, column
 > names). To build a literal SQL expression, use `init(literal:)`.
 > <!-- FIXME -->
@@ -359,7 +362,8 @@ try db.run(users.create { t in     // CREATE TABLE "users" (
 })                                 // )
 ```
 
-> _Note:_ `SQLExpression<T>` structures (in this case, the `id` and `email`
+> [!NOTE]
+> `SQLExpression<T>` structures (in this case, the `id` and `email`
 > columns), generate `NOT NULL` constraints automatically, while
 > `SQLExpression<T?>` structures (`name`) do not.
 
@@ -402,7 +406,8 @@ several parameters that map to various column constraints and clauses.
     // "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
     ```
 
-    > _Note:_ The `primaryKey` parameter cannot be used alongside
+    > [!NOTE]
+    > The `primaryKey` parameter cannot be used alongside
     > `references`. If you need to create a column that has a default value
     > and is also a primary and/or foreign key, use the `primaryKey` and
     > `foreignKey` functions mentioned under
@@ -443,7 +448,8 @@ several parameters that map to various column constraints and clauses.
     // "name" TEXT DEFAULT 'Anonymous'
     ```
 
-    > _Note:_ The `defaultValue` parameter cannot be used alongside
+    > [!NOTE]
+    > The `defaultValue` parameter cannot be used alongside
     > `primaryKey` and `references`. If you need to create a column that has
     > a default value and is also a primary and/or foreign key, use the
     > `primaryKey` and `foreignKey` functions mentioned under
@@ -473,7 +479,8 @@ several parameters that map to various column constraints and clauses.
     // "user_id" INTEGER REFERENCES "users" ("id")
     ```
 
-    > _Note:_ The `references` parameter cannot be used alongside
+    > [!NOTE]
+    > The `references` parameter cannot be used alongside
     > `primaryKey` and `defaultValue`. If you need to create a column that
     > has a default value and is also a primary and/or foreign key, use the
     > `primaryKey` and `foreignKey` functions mentioned under
@@ -574,7 +581,8 @@ do {
 The [`update`](#updating-rows) and [`delete`](#deleting-rows) functions
 follow similar patterns.
 
-> _Note:_ If `insert` is called without any arguments, the statement will run
+> [!NOTE]
+> If `insert` is called without any arguments, the statement will run
 > with a `DEFAULT VALUES` clause. The table must not have any constraints
 > that aren’t fulfilled by default values.
 >
@@ -836,7 +844,8 @@ let query = users.join(posts, on: user_id == users[id])
 Namespacing is achieved by subscripting a [query](#queries) with a [column
 expression](#expressions) (_e.g._, `users[id]` above becomes `users.id`).
 
-> _Note:_ We can namespace all of a table’s columns using `*`.
+> [!NOTE]
+> We can namespace all of a table’s columns using `*`.
 >
 > ```swift
 > let query = users.select(users[*])
@@ -1120,7 +1129,8 @@ let count = try db.scalar(users.filter(name != nil).count)
     // SELECT total("balance") FROM "users"
     ```
 
-> _Note:_ Expressions can be prefixed with a `DISTINCT` clause by calling the
+> [!NOTE]
+> Expressions can be prefixed with a `DISTINCT` clause by calling the
 > `distinct` computed property.
 >
 > ```swift
@@ -1251,7 +1261,8 @@ try db.transaction {
 // COMMIT TRANSACTION
 ```
 
-> _Note:_ Transactions run in a serial queue.
+> [!NOTE]
+> Transactions run in a serial queue.
 
 ## Querying the Schema
 
@@ -1355,7 +1366,8 @@ tables](#creating-a-table).
     // ALTER TABLE "users" ADD COLUMN "suffix" TEXT DEFAULT 'SR'
     ```
 
-    > _Note:_ Unlike the [`CREATE TABLE` constraint](#table-constraints),
+    > [!NOTE]
+    > Unlike the [`CREATE TABLE` constraint](#table-constraints),
     > default values may not be expression structures (including
     > `CURRENT_TIME`, `CURRENT_DATE`, or `CURRENT_TIMESTAMP`).
 
@@ -1384,7 +1396,7 @@ tables](#creating-a-table).
 
 ### SchemaChanger
 
-Version 0.14.0 introduces `SchemaChanger`, an alternative API to perform more complex
+The `SchemaChanger` is an alternative API to perform more complex
 migrations such as renaming columns. These operations work with all versions of
 SQLite but use SQL statements such as `ALTER TABLE RENAME COLUMN` when available.
 
@@ -1527,7 +1539,8 @@ The `Datatype` must be one of the basic Swift types that values are bridged
 through before serialization and deserialization (see [Building Type-Safe SQL
 ](#building-type-safe-sql) for a list of types).
 
-> ⚠ _Note:_ `Binding` is a protocol that SQLiteDB uses internally to
+> [!WARNING]
+> `Binding` is a protocol that SQLiteDB uses internally to
 > directly map SQLite types to Swift types. **Do _not_** conform custom types
 > to the `Binding` protocol.
 
@@ -1570,7 +1583,8 @@ extension UIImage: Value {
 }
 ```
 
-> _Note:_ See the [Archives and Serializations Programming Guide][] for more
+> [!NOTE]
+> See the [Archives and Serializations Programming Guide][] for more
 > information on encoding and decoding custom types.
 
 
@@ -1711,7 +1725,8 @@ arithmetic, bitwise operations, and concatenation.
 | `\|`  | `Int -> Int`                     | `\|`     |
 | `+`   | `String -> String`               | `\|\|`   |
 
-> _Note:_ SQLiteDB also defines a bitwise XOR operator, `^`, which
+> [!NOTE]
+> SQLiteDB also defines a bitwise XOR operator, `^`, which
 > expands the expression `lhs ^ rhs` to `~(lhs & rhs) & (lhs | rhs)`.
 
 
@@ -1728,7 +1743,8 @@ arithmetic, bitwise operations, and concatenation.
 Many of SQLite’s [core functions](https://www.sqlite.org/lang_corefunc.html)
 have been surfaced in and type-audited for SQLiteDB.
 
-> _Note:_ SQLiteDB aliases the `??` operator to the `ifnull` function.
+> [!NOTE]
+> SQLiteDB aliases the `??` operator to the `ifnull` function.
 >
 > ```swift
 > name ?? email // ifnull("name", "email")
@@ -1779,7 +1795,8 @@ let typeConformsTo: (SQLExpression<String>, SQLExpression<String>) -> SQLExpress
 )
 ```
 
-> _Note:_ The optional `deterministic` parameter is an optimization that
+> [!NOTE]
+> The optional `deterministic` parameter is an optimization that
 > causes the function to be created with
 > [`SQLITE_DETERMINISTIC`](https://www.sqlite.org/c3ref/c_deterministic.html).
 
@@ -1807,7 +1824,8 @@ let images = attachments.filter(typeConformsTo(UTI, kUTTypeImage))
 // SELECT * FROM "attachments" WHERE "typeConformsTo"("UTI", 'public.image')
 ```
 
-> _Note:_ The return type of a function must be
+> [!NOTE]
+> The return type of a function must be
 > [a core SQL type](#building-type-safe-sql) or [conform to `Value`](#custom-types).
 
 We can create loosely-typed functions by handling an array of raw arguments,
@@ -1828,7 +1846,8 @@ let stmt = try db.prepare("SELECT * FROM attachments WHERE typeConformsTo(UTI, ?
 for row in stmt.bind(kUTTypeImage) { /* ... */ }
 ```
 
-> _Note:_ Prepared queries can be reused, and long lived prepared queries should be `reset()` after each use. Otherwise, the transaction (either [implicit or explicit](https://www.sqlite.org/lang_transaction.html#implicit_versus_explicit_transactions)) will be held open until the query is reset or finalized. This can affect performance. Statements are reset automatically during `deinit`.
+> [!NOTE]
+> Prepared queries can be reused, and long lived prepared queries should be `reset()` after each use. Otherwise, the transaction (either [implicit or explicit](https://www.sqlite.org/lang_transaction.html#implicit_versus_explicit_transactions)) will be held open until the query is reset or finalized. This can affect performance. Statements are reset automatically during `deinit`.
 >
 > ```swift
 > someObj.statement = try db.prepare("SELECT * FROM attachments WHERE typeConformsTo(UTI, ?)")
