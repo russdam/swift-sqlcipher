@@ -406,16 +406,16 @@ several parameters that map to various column constraints and clauses.
     // "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
     ```
 
-    > [!NOTE]
-    > The `primaryKey` parameter cannot be used alongside
-    > `references`. If you need to create a column that has a default value
-    > and is also a primary and/or foreign key, use the `primaryKey` and
-    > `foreignKey` functions mentioned under
-    > [Table Constraints](#table-constraints).
-    >
-    > Primary keys cannot be optional (_e.g._, `SQLExpression<Int64?>`).
-    >
-    > Only an `INTEGER PRIMARY KEY` can take `.autoincrement`.
+> [!NOTE]
+> The `primaryKey` parameter cannot be used alongside
+> `references`. If you need to create a column that has a default value
+> and is also a primary and/or foreign key, use the `primaryKey` and
+> `foreignKey` functions mentioned under
+> [Table Constraints](#table-constraints).
+>
+> Primary keys cannot be optional (_e.g._, `SQLExpression<Int64?>`).
+>
+> Only an `INTEGER PRIMARY KEY` can take `.autoincrement`.
 
   - `unique` adds a `UNIQUE` constraint to the column. (See the `unique`
     function under [Table Constraints](#table-constraints) for uniqueness
@@ -448,12 +448,12 @@ several parameters that map to various column constraints and clauses.
     // "name" TEXT DEFAULT 'Anonymous'
     ```
 
-    > [!NOTE]
-    > The `defaultValue` parameter cannot be used alongside
-    > `primaryKey` and `references`. If you need to create a column that has
-    > a default value and is also a primary and/or foreign key, use the
-    > `primaryKey` and `foreignKey` functions mentioned under
-    > [Table Constraints](#table-constraints).
+> [!NOTE]
+> The `defaultValue` parameter cannot be used alongside
+> `primaryKey` and `references`. If you need to create a column that has
+> a default value and is also a primary and/or foreign key, use the
+> `primaryKey` and `foreignKey` functions mentioned under
+> [Table Constraints](#table-constraints).
 
   - `collate` adds a `COLLATE` clause to `SQLExpression<String>` (and
     `SQLExpression<String?>`) column definitions with
@@ -479,12 +479,12 @@ several parameters that map to various column constraints and clauses.
     // "user_id" INTEGER REFERENCES "users" ("id")
     ```
 
-    > [!NOTE]
-    > The `references` parameter cannot be used alongside
-    > `primaryKey` and `defaultValue`. If you need to create a column that
-    > has a default value and is also a primary and/or foreign key, use the
-    > `primaryKey` and `foreignKey` functions mentioned under
-    > [Table Constraints](#table-constraints).
+> [!NOTE]
+> The `references` parameter cannot be used alongside
+> `primaryKey` and `defaultValue`. If you need to create a column that
+> has a default value and is also a primary and/or foreign key, use the
+> `primaryKey` and `foreignKey` functions mentioned under
+> [Table Constraints](#table-constraints).
 
 
 ### Table Constraints
@@ -1366,10 +1366,10 @@ tables](#creating-a-table).
     // ALTER TABLE "users" ADD COLUMN "suffix" TEXT DEFAULT 'SR'
     ```
 
-    > [!NOTE]
-    > Unlike the [`CREATE TABLE` constraint](#table-constraints),
-    > default values may not be expression structures (including
-    > `CURRENT_TIME`, `CURRENT_DATE`, or `CURRENT_TIMESTAMP`).
+> [!NOTE]
+> Unlike the [`CREATE TABLE` constraint](#table-constraints),
+> default values may not be expression structures (including
+> `CURRENT_TIME`, `CURRENT_DATE`, or `CURRENT_TIMESTAMP`).
 
   - `collate` adds a `COLLATE` clause to `SQLExpression<String>` (and
     `SQLExpression<String?>`) column definitions with [a collating
