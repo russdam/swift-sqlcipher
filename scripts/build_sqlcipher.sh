@@ -16,8 +16,8 @@ SQLCIPHER_VERSION=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:ref
 cd `mktemp -d`
 wget ${SQLCIPHER_REPO}/archive/refs/tags/v${SQLCIPHER_VERSION}.tar.gz
 tar xvzf v${SQLCIPHER_VERSION}.tar.gz
-./sqlcipher-${SQLCIPHER_VERSION}/configure --enable-tempstore=yes --with-crypto-lib=libtomcrypt CFLAGS="-DSQLITE_HAS_CODEC -I/opt/homebrew/include/ -L/opt/homebrew/lib/"
-make
+./sqlcipher-${SQLCIPHER_VERSION}/configure --with-tempstore=yes CFLAGS="-DSQLCIPHER_CRYPTO_LIBTOMCRYPT -DSQLITE_HAS_CODEC -DSQLITE_EXTRA_INIT=sqlcipher_extra_init -DSQLITE_EXTRA_SHUTDOWN=sqlcipher_extra_shutdown -I/opt/homebrew/include/ -L/opt/homebrew/lib/"
+make sqlite3.c
 
-cp -v sqlite3.c sqlite3.h ${OLDPWD}/../Sources/SQLCipher/sqlite/
+cp -v sqlite3.c sqlite3.h ${OLDPWD}/Sources/SQLCipher/sqlite/
 

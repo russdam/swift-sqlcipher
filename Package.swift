@@ -58,7 +58,10 @@ let package = Package(
                 .define("SQLITE_USE_URI"),
                 .define("SQLITE_ENABLE_SNAPSHOT"),
                 .define("SQLITE_HAS_CODEC"),
+                .define("SQLITE_HOMEGROWN_RECURSIVE_MUTEX"), // needed or we see hangs in test cases
                 .define("SQLITE_TEMP_STORE", to: "2"),
+                .define("SQLITE_EXTRA_INIT", to: "sqlcipher_extra_init"),
+                .define("SQLITE_EXTRA_SHUTDOWN", to: "sqlcipher_extra_shutdown"),
                 .define("HAVE_GETHOSTUUID", to: "0"),
                 .define("SQLCIPHER_CRYPTO_LIBTOMCRYPT"),
             ],
