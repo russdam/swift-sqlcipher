@@ -94,6 +94,29 @@ The `SQLMiddleware` module has just a single top-level function `middlewareDatab
 
 A dependent of `SQLMiddleware` that enables the `SQLCipher` trait.
 
+```swift
+// swift-tools-version: 6.1
+import PackageDescription
+
+let package = Package(
+    name: "MiddlewareClientWithSQLCipher",
+    products: [
+        .library(name: "MiddlewareClientWithSQLCipher",
+            targets: ["MiddlewareClientWithSQLCipher"])
+    ],
+    dependencies: [
+        .package(path: "../SQLMiddleware", traits: ["SQLCipher"])
+    ],
+    targets: [
+        .target(name: "MiddlewareClientWithSQLCipher", dependencies: [
+            .product(name: "SQLMiddleware", package: "SQLMiddleware")
+        ]),
+        .testTarget(name: "MiddlewareClientWithSQLCipherTests",
+            dependencies: ["MiddlewareClientWithSQLCipher"])
+    ]
+)
+```
+
 It contains a test case:
 
 ```swift
@@ -105,6 +128,29 @@ It contains a test case:
 ### MiddlewareClientWithoutSQLCipher
 
 A dependent of `SQLMiddleware` that does not enable the `SQLCipher` trait.  It is otherwise identical to `MiddlewareClientWithSQLCipher` in every way.
+
+```swift
+// swift-tools-version: 6.1
+import PackageDescription
+
+let package = Package(
+    name: "MiddlewareClientWithoutSQLCipher",
+    products: [
+        .library(name: "MiddlewareClientWithoutSQLCipher",
+            targets: ["MiddlewareClientWithoutSQLCipher"])
+    ],
+    dependencies: [
+        .package(path: "../SQLMiddleware")
+    ],
+    targets: [
+        .target(name: "MiddlewareClientWithoutSQLCipher", dependencies: [
+            .product(name: "SQLMiddleware", package: "SQLMiddleware")
+        ]),
+        .testTarget(name: "MiddlewareClientWithoutSQLCipherTests",
+            dependencies: ["MiddlewareClientWithoutSQLCipher"])
+    ]
+)
+```
 
 It contains a test case:
 
