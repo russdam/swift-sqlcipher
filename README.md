@@ -2205,6 +2205,9 @@ In this way, your package can be parameterized to work with either the
 built-in vendored SQLite3 package or with the SQLCipher package
 depending on the needs of the developer.
 
+For a full set of examples, see the [Examples/PackageTraits](./Examples/PackageTraits) folder.
+
+
 ## Communication
 
  - [Browse discussions](https://github.com/skiptools/swift-sqlcipher/discussions)
