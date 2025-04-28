@@ -97,7 +97,7 @@ A dependent of `SQLMiddleware` that enables the `SQLCipher` trait.
 It contains a test case:
 
 ```swift
-@Test func example() async throws {
+@Test func testDatabaseIsSQLCipher() async throws {
     #expect(databaseVerison() == "SQLCipher 4.8.0 community")
 }
 ```
@@ -109,7 +109,7 @@ A dependent of `SQLMiddleware` that does not enable the `SQLCipher` trait.  It i
 It contains a test case:
 
 ```swift
-@Test func example() async throws {
+@Test func testDatabaseIsSQLite() async throws {
     #expect(databaseVerison() == "SQLite3 3.43.2")
 }
 ```
