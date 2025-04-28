@@ -1,6 +1,6 @@
 import SQLMiddleware
 
-func databaseVerison() -> String? {
+func databaseVersion() -> String? {
     middlewareDatabaseType()
 }
 

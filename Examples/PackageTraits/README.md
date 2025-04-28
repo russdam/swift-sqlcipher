@@ -70,7 +70,7 @@ The `SQLMiddleware` module has just a single top-level function `middlewareDatab
  import SQLite3
  #endif
  
- public func databaseVerison() -> String? {
+ public func databaseVersion() -> String? {
      #if canImport(SQLCipher)
      let dbtype = "SQLCipher"
      let sql = "PRAGMA cipher_version;"
@@ -121,7 +121,7 @@ It contains a test case:
 
 ```swift
 @Test func testDatabaseIsSQLCipher() async throws {
-    #expect(databaseVerison() == "SQLCipher 4.8.0 community")
+    #expect(databaseVersion() == "SQLCipher 4.8.0 community")
 }
 ```
 
@@ -156,7 +156,7 @@ It contains a test case:
 
 ```swift
 @Test func testDatabaseIsSQLite() async throws {
-    #expect(databaseVerison() == "SQLite3 3.43.2")
+    #expect(databaseVersion() == "SQLite3 3.43.2")
 }
 ```
 
