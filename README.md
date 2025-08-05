@@ -14,7 +14,7 @@ library (e.g., Android, Windows).
 ## Features
 
  - A pure-Swift interface
- - Embeds a modern and consistent sqlite ([3.49.2](https://www.sqlite.org/releaselog/3_49_2.html)) and sqlcipher ([4.9.0](https://github.com/sqlcipher/sqlcipher/releases/tag/v4.9.0)) build in the library
+ - Embeds a modern and consistent sqlite ([3.50.4](https://www.sqlite.org/releaselog/3_50_4.html)) and sqlcipher ([4.10.0](https://github.com/sqlcipher/sqlcipher/releases/tag/v4.10.0)) build in the library
  - Works on iOS, macOS, Android, Windows, and Linux
  - A type-safe, optional-aware SQL expression builder
  - A flexible, chainable, lazy-executing query layer
@@ -2224,12 +2224,14 @@ For a full set of examples, see the [Examples/PackageTraits](./Examples/PackageT
 
 Here are a number of other popular SQLite alternative packages:
 
- - [SQLite.swift](https://github.com/stephencelis/SQLite.swift)
+ - [SQLite.swift]: The root of this fork (non-SQLCipher SQLite3)
+ - [SQLCipher.swift]: Binary SQLCipher.xcframework (Darwin platforms only)
  - [GRDB](https://github.com/groue/GRDB.swift)
- - [swift-toolchain-sqlite](https://github.com/swiftlang/swift-toolchain-sqlite)
  - [FMDB]
+ - [swift-toolchain-sqlite](https://github.com/swiftlang/swift-toolchain-sqlite)
 
 [SQLiteDB]: #sqlitedb
 [SQLite3]: https://www.sqlite.org
 [SQLite.swift]: https://github.com/stephencelis/SQLite.swift
 [FMDB]: https://github.com/ccgus/fmdb
+[SQLCipher.swift]: https://github.com/sqlcipher/SQLCipher.swift
