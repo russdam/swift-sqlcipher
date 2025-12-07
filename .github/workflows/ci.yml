@@ -12,6 +12,11 @@ jobs:
   linux-android:
     runs-on: ubuntu-latest
     steps:
+      - name: "Free Disk Space"
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL
+          docker image prune --all --force
+          docker builder prune -a
       - uses: actions/checkout@v4
       - name: "Test Swift Package Android"
         uses: skiptools/swift-android-action@v2
