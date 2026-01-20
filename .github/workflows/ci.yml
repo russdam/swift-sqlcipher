@@ -7,7 +7,7 @@ on:
     branches:
       - '*'
   schedule:
-    - cron: '0 6,18 * * *'
+    - cron: '0 6 * * *'
 jobs:
   linux:
     runs-on: ubuntu-latest
@@ -37,13 +37,15 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: "Test Swift Package macOS"
+        run: swift test
   windows:
     runs-on: windows-2022
     steps:
       - uses: compnerd/gha-setup-swift@main
         with:
-          swift-version: swift-6.2-release
-          swift-build: 6.2-RELEASE
+          swift-version: swift-6.2.3-release
+          swift-build: 6.2.3-RELEASE
       - uses: actions/checkout@v6
-      - run: swift test
+      - name: "Test Swift Package Windows"
+        run: swift test
 
