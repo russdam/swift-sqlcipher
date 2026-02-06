@@ -3,15 +3,7 @@ import Foundation
 import Dispatch
 @testable import SQLiteDB
 
-#if SQLITE_SWIFT_STANDALONE
-import sqlite3
-#elseif SQLITE_SWIFT_SQLCIPHER
 import SQLCipher
-#elseif os(Linux) || os(Windows) || os(Android)
-import CSQLite
-#else
-import SQLite3
-#endif
 
 class ConnectionTests: SQLiteTestCase {
 
@@ -292,7 +284,7 @@ class ConnectionTests: SQLiteTestCase {
         assertSQL("RELEASE SAVEPOINT '1'", 0)
     }
 
-    func test_updateHook_setsUpdateHook_withInsert() throws {
+    @MainActor func test_updateHook_setsUpdateHook_withInsert() throws {
         try async { done in
             db.updateHook { operation, db, table, rowid in
                 XCTAssertEqual(Connection.Operation.insert, operation)
@@ -305,7 +297,7 @@ class ConnectionTests: SQLiteTestCase {
         }
     }
 
-    func test_updateHook_setsUpdateHook_withUpdate() throws {
+    @MainActor func test_updateHook_setsUpdateHook_withUpdate() throws {
         try insertUser("alice")
         try async { done in
             db.updateHook { operation, db, table, rowid in
@@ -319,7 +311,7 @@ class ConnectionTests: SQLiteTestCase {
         }
     }
 
-    func test_updateHook_setsUpdateHook_withDelete() throws {
+    @MainActor func test_updateHook_setsUpdateHook_withDelete() throws {
         try insertUser("alice")
         try async { done in
             db.updateHook { operation, db, table, rowid in
@@ -333,7 +325,7 @@ class ConnectionTests: SQLiteTestCase {
         }
     }
 
-    func test_commitHook_setsCommitHook() throws {
+    @MainActor func test_commitHook_setsCommitHook() throws {
         try async { done in
             db.commitHook {
                 done()
@@ -345,7 +337,7 @@ class ConnectionTests: SQLiteTestCase {
         }
     }
 
-    func test_rollbackHook_setsRollbackHook() throws {
+    @MainActor func test_rollbackHook_setsRollbackHook() throws {
         try async { done in
             db.rollbackHook(done)
             do {
@@ -359,7 +351,7 @@ class ConnectionTests: SQLiteTestCase {
         }
     }
 
-    func test_commitHook_withRollback_rollsBack() throws {
+    @MainActor func test_commitHook_withRollback_rollsBack() throws {
         try async { done in
             db.commitHook {
                 throw NSError(domain: "com.stephencelis.SQLiteTests", code: 1, userInfo: nil)
@@ -427,20 +419,26 @@ class ConnectionTests: SQLiteTestCase {
     #endif
 
     func test_concurrent_access_single_connection() throws {
-        // test can fail on iOS/tvOS 9.x: SQLite compile-time differences?
-        guard #available(iOS 10.0, OSX 10.10, tvOS 10.0, watchOS 2.2, *) else { return }
-
         let conn = try Connection("\(NSTemporaryDirectory())/\(UUID().uuidString)")
         try conn.execute("DROP TABLE IF EXISTS test; CREATE TABLE test(value);")
         try conn.run("INSERT INTO test(value) VALUES(?)", 0)
         let queue = DispatchQueue(label: "Readers", attributes: [.concurrent])
 
+        struct ConnectionWrapper: @unchecked Sendable {
+            let conn: Connection
+
+            func callScalar() {
+                _ = try! conn.scalar("SELECT value FROM test")
+            }
+        }
+
+        let wrapper = ConnectionWrapper(conn: conn)
         let nReaders = 5
         let semaphores =  Array(repeating: DispatchSemaphore(value: 100), count: nReaders)
         for index in 0..<nReaders {
             queue.async {
                 while semaphores[index].signal() == 0 {
-                    _ = try! conn.scalar("SELECT value FROM test")
+                    wrapper.callScalar()
                 }
             }
         }

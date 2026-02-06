@@ -3,15 +3,7 @@ import Foundation
 import Dispatch
 @testable import SQLiteDB
 
-#if SQLITE_SWIFT_STANDALONE
-import sqlite3
-#elseif SQLITE_SWIFT_SQLCIPHER
 import SQLCipher
-#elseif os(Linux) || os(Windows) || os(Android)
-import CSQLite
-#else
-import SQLite3
-#endif
 
 // https://github.com/stephencelis/SQLite.swift/issues/1071
 #if !os(Linux) && !os(Android) && !os(Windows)
@@ -147,11 +139,11 @@ class CustomAggregationTests: SQLiteTestCase {
 /// This class is used to test that aggregation state variables
 /// can be reference types and are properly memory managed when
 /// crossing the Swift<->C boundary multiple times.
-class TestObject {
-    static var inits = 0
-    static var deinits = 0
+final class TestObject: Sendable {
+    nonisolated(unsafe) static var inits = 0
+    nonisolated(unsafe) static var deinits = 0
 
-    var value: Int64
+    nonisolated(unsafe) var value: Int64
     init(value: Int64) {
         self.value = value
         TestObject.inits += 1
