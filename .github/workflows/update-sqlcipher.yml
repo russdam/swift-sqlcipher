@@ -1,0 +1,67 @@
+name: Update SQLCipher
+
+on:
+  schedule:
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-sqlcipher:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check latest SQLCipher version
+        id: check
+        run: |
+          # Get the latest tag from the SQLCipher repository
+          SQLCIPHER_REPO="https://github.com/sqlcipher/sqlcipher"
+          LATEST_VERSION=$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' ${SQLCIPHER_REPO} | tail -n 1 | cut -d '/' -f 3 | cut -f 1 -d '^' | cut -f 2 -d 'v')
+          echo "latest_version=${LATEST_VERSION}" >> "$GITHUB_OUTPUT"
+
+          # Get the current SQLCipher version from CIPHER_VERSION_NUMBER in sqlite3.c
+          CURRENT_SQLCIPHER_VERSION=$(grep '#define CIPHER_VERSION_NUMBER ' Sources/SQLCipher/sqlite/sqlite3.c | head -1 | awk '{print $3}')
+          echo "current_version=${CURRENT_SQLCIPHER_VERSION}" >> "$GITHUB_OUTPUT"
+
+          if [ "${LATEST_VERSION}" != "${CURRENT_SQLCIPHER_VERSION}" ]; then
+            echo "updated=true" >> "$GITHUB_OUTPUT"
+            echo "New SQLCipher version available: ${LATEST_VERSION} (current: ${CURRENT_SQLCIPHER_VERSION})"
+          else
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            echo "SQLCipher is up to date: ${CURRENT_SQLCIPHER_VERSION}"
+          fi
+
+      - name: Run build_sqlcipher.sh
+        if: steps.check.outputs.updated == 'true'
+        run: |
+          brew install libtomcrypt
+          scripts/build_sqlcipher.sh
+
+      - name: Create pull request
+        if: steps.check.outputs.updated == 'true'
+        run: |
+          VERSION="${{ steps.check.outputs.latest_version }}"
+          BRANCH="automated/sqlcipher-${VERSION}"
+
+          # Get the new SQLite version from the updated header
+          SQLITE_VERSION=$(grep '^#define SQLITE_VERSION ' Sources/SQLCipher/sqlite/sqlite3.h | head -1 | sed 's/.*"\(.*\)".*/\1/')
+
+          git config user.name "swift-ci"
+          git config user.email "swift-ci@users.noreply.github.com"
+          git checkout -b "${BRANCH}"
+          git add -A
+          git commit -m "Update to SQLCipher ${VERSION} (SQLite ${SQLITE_VERSION})"
+          git push origin "${BRANCH}"
+
+          gh pr create \
+            --title "Update to SQLCipher ${VERSION}" \
+            --body "Updates SQLCipher from ${{ steps.check.outputs.current_version }} to ${VERSION} (SQLite ${SQLITE_VERSION}).
+
+          Release notes: https://github.com/sqlcipher/sqlcipher/releases/tag/v${VERSION}" \
+            --draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
