@@ -50,8 +50,8 @@ jobs:
           # Get the new SQLite version from the updated header
           SQLITE_VERSION=$(grep '^#define SQLITE_VERSION ' Sources/SQLCipher/sqlite/sqlite3.h | head -1 | sed 's/.*"\(.*\)".*/\1/')
 
-          git config user.name "swift-ci"
-          git config user.email "swift-ci@users.noreply.github.com"
+          git config user.name "skipbuilder"
+          git config user.email "skipbuilder@users.noreply.github.com"
           git checkout -b "${BRANCH}"
           git add -A
           git commit -m "Update to SQLCipher ${VERSION} (SQLite ${SQLITE_VERSION})"
