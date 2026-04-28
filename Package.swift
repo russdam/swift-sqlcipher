@@ -318,7 +318,8 @@ let package = Package(
             linkerSettings: [.linkedLibrary("log", .when(platforms: [.android]))]),
         .testTarget(
             name: "SQLCipherTests",
-            dependencies: ["SQLCipher"]
+            dependencies: ["SQLCipher"],
+            cSettings: [.define("SQLITE_HAS_CODEC")]
         ),
         .target(
             name: "SQLiteDB",
@@ -331,7 +332,8 @@ let package = Package(
         .testTarget(
             name: "SQLiteDBTests",
             dependencies: ["SQLiteDB"],
-            resources: [.process("Resources")]
+            resources: [.process("Resources")],
+            cSettings: [.define("SQLITE_HAS_CODEC")]
         ),
     ]
 )
