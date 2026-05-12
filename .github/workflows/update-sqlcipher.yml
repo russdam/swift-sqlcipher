@@ -58,7 +58,7 @@ jobs:
           git push origin "${BRANCH}"
 
           gh pr create \
-            --title "Update to SQLCipher ${VERSION}" \
+            --title "Update to SQLCipher ${VERSION} and SQLite ${SQLITE_VERSION}" \
             --body "Updates SQLCipher from ${{ steps.check.outputs.current_version }} to ${VERSION} (SQLite ${SQLITE_VERSION}).
 
           Release notes: https://github.com/sqlcipher/sqlcipher/releases/tag/v${VERSION}" \
